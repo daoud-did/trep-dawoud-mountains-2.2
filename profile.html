@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حسابي - TREP DAWOUD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E8B57;
+            --secondary: #87CEEB;
+            --white: #FFFFFF;
+            --accent: #FFD700;
+            --glow-primary: rgba(46, 139, 87, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 1rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-menu a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--accent);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 6rem auto;
+            padding: 2rem;
+        }
+
+        .profile-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .profile-sidebar {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(46, 139, 87, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin: 0 auto 1rem;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-status {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .profile-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .profile-menu a {
+            padding: 0.8rem;
+            background: rgba(46, 139, 87, 0.1);
+            border: 1px solid rgba(46, 139, 87, 0.2);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .profile-menu a:hover {
+            background: rgba(46, 139, 87, 0.3);
+            color: var(--accent);
+        }
+
+        .profile-main {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(46, 139, 87, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            border-bottom: 2px solid rgba(46, 139, 87, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .info-group {
+            margin-bottom: 2rem;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: var(--white);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--glow-primary);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.95);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(46, 139, 87, 0.2);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-mountain"></i> TREP DAWOUD
+            </div>
+            <div class="nav-menu">
+                <a href="index.html">الرئيسية</a>
+                <a href="mountains.html">الجبال</a>
+                <a href="dashboard.html">لوحة التحكم</a>
+                <a href="blog.html">المدونة</a>
+                <a href="courses.html">الدورات</a>
+                <a href="services.html">الخدمات</a>
+                <a href="question.html">أسئلة</a>
+                <a href="login.html">تسجيل الدخول</a>
+                <a href="signup.html">إنشاء حساب</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="profile-container">
+            <!-- Sidebar -->
+            <div class="profile-sidebar">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h2 class="profile-name">أحمد محمد</h2>
+                <p class="profile-status">مستخدم نشط</p>
+                
+                <div class="profile-menu">
+                    <a href="#profile">الملف الشخصي</a>
+                    <a href="#settings">الإعدادات</a>
+                    <a href="#courses">دوراتي</a>
+                    <a href="#achievements">إنجازاتي</a>
+                    <a href="#logout">تسجيل الخروج</a>
+                </div>
+            </div>
+
+            <!-- Main Profile Content -->
+            <div class="profile-main">
+                <h1 class="section-title">الملف الشخصي</h1>
+
+                <div class="info-group">
+                    <label class="info-label">الاسم الكامل</label>
+                    <p class="info-value">أحمد محمد علي</p>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">البريد الإلكتروني</label>
+                    <p class="info-value">ahmed@example.com</p>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">رقم الهاتف</label>
+                    <p class="info-value">+966 50 123 4567</p>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">الدولة</label>
+                    <p class="info-value">المملكة العربية السعودية</p>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">مستوى الخبرة</label>
+                    <p class="info-value">متوسط</p>
+                </div>
+
+                <h1 class="section-title">الإحصائيات</h1>
+
+                <div class="info-group">
+                    <label class="info-label">الجبال المستكشفة</label>
+                    <p class="info-value">45 جبل</p>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">الدورات المكتملة</label>
+                    <p class="info-value">3 دورات</p>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">النقاط المكتسبة</label>
+                    <p class="info-value">1,250 نقطة</p>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary">تحديث الملف</button>
+                    <button class="btn btn-secondary">تغيير كلمة المرور</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 TREP DAWOUD. جميع الحقوق محفوظة.</p>
+        <p>
+            <a href="index.html">الرئيسية</a> | 
+            <a href="mountains.html">الجبال</a> | 
+            <a href="blog.html">المدونة</a> | 
+            <a href="courses.html">الدورات</a>
+        </p>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

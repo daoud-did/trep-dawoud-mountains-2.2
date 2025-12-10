@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسئلة عن الجبال - موقع الجبال</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/card-design.css">
+    <style>
+        :root {
+            --primary: #2d5016;
+            --secondary: #8fbc8f;
+            --carousel-radius: 500px;
+            --bg-dark: #0f1a0f;
+            --text-light: #f0f8ff;
+            --mountain-dark: #2f4f4f;
+            --mountain-light: #708090;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a2f1a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* العنوان الرئيسي */
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(45, 80, 22, 0.5);
+            animation: pulse 3s infinite alternate;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        /* قسم الكاروسيل */
+        .carousel-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .carousel {
+            position: relative;
+            width: var(--carousel-radius);
+            height: var(--carousel-radius);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            margin: 2rem 0;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 200px;
+            height: 250px;
+            background: linear-gradient(135deg, var(--mountain-dark) 0%, var(--mountain-light) 100%);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .carousel-item::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.3));
+            z-index: 1;
+        }
+
+        .carousel-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(143, 188, 143, 0.4);
+        }
+
+        .carousel-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            z-index: 2;
+        }
+
+        .carousel-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            z-index: 2;
+        }
+
+        .carousel-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            z-index: 2;
+        }
+
+        /* قسم الأسئلة */
+        .questions-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(143, 188, 143, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+
+        .question-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(10px);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .question-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .question-difficulty {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .difficulty-easy {
+            background: rgba(0, 255, 0, 0.2);
+            color: #90ee90;
+        }
+
+        .difficulty-medium {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+        }
+
+        .difficulty-hard {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff7f7f;
+        }
+
+        .question-description {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .question-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: rgba(45, 80, 22, 0.3);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(143, 188, 143, 0.3);
+        }
+
+        /* Quiz specific styles */
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(143, 188, 143, 0.3);
+            border-radius: 10px;
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--secondary);
+        }
+
+        .quiz-option.correct {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #90ee90;
+            color: #90ee90;
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff7f7f;
+            color: #ff7f7f;
+        }
+
+        .quiz-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .quiz-feedback.correct {
+            background: rgba(0, 255, 0, 0.2);
+            color: #90ee90;
+            border: 2px solid #90ee90;
+        }
+
+        .quiz-feedback.incorrect {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff7f7f;
+            border: 2px solid #ff7f7f;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(143, 188, 143, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .submit-btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(143, 188, 143, 0.3);
+        }
+
+        .quiz-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(143, 188, 143, 0.3);
+        }
+
+        .mountain-background {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(transparent, var(--mountain-dark));
+            z-index: -1;
+        }
+
+        .mountain-range {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100px;
+            background: var(--mountain-light);
+            clip-path: polygon(0% 100%, 5% 70%, 10% 80%, 15% 60%, 20% 90%, 25% 65%, 30% 75%, 35% 50%, 40% 70%, 45% 40%, 50% 60%, 55% 30%, 60% 50%, 65% 20%, 70% 40%, 75% 10%, 80% 30%, 85% 5%, 90% 20%, 95% 0%, 100% 15%, 100% 100%);
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .carousel {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .carousel-item {
+                width: 150px;
+                height: 180px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header style="background: #2F4F4F; color: white; padding: 1rem; position: fixed; width: 100%; z-index: 1000;">
+        <nav style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <div class="logo">
+                <h2 style="color: #2E8B57;">TREP DAWOUD</h2>
+            </div>
+            <ul style="list-style: none; display: flex; gap: 2rem;">
+                <li><a href="index.html" style="color: white; text-decoration: none;">الرئيسية</a></li>
+                <li><a href="mountains.html" style="color: white; text-decoration: none;">الجبال</a></li>
+                <li><a href="dashboard.html" style="color: white; text-decoration: none;">لوحة التحكم</a></li>
+                <li><a href="blog.html" style="color: white; text-decoration: none;">المدونة</a></li>
+                <li><a href="courses.html" style="color: white; text-decoration: none;">الدورات</a></li>
+                <li><a href="services.html" style="color: white; text-decoration: none;">الخدمات</a></li>
+                <li><a href="question.html" style="color: white; text-decoration: none; font-weight: bold;">أسئلة</a></li>
+                <li><a href="login.html" style="color: white; text-decoration: none;">تسجيل الدخول</a></li>
+                <li><a href="signup.html" style="color: white; text-decoration: none;">إنشاء حساب</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="mountain-background">
+        <div class="mountain-range"></div>
+    </div>
+
+    <div class="container" style="padding-top: 5rem;">
+        <h1 class="title"><i class="fas fa-mountain"></i> أسئلة عن الجبال</h1>
+        <p class="subtitle">
+            اختبر معلوماتك واستكشف عالم الجبال والسلاسل الجبلية
+        </p>
+
+        <!-- قسم الكاروسيل -->
+        <section class="carousel-section">
+            <div class="carousel" id="mountainCarousel">
+                <!-- سيتم إضافة العناصر عبر الجافاسكريبت -->
+            </div>
+        </section>
+
+        <!-- قسم الأسئلة -->
+        <section class="questions-section">
+            <h2 class="section-title"><i class="fas fa-question-circle"></i> أسئلة وتحديات جبلية</h2>
+            <div id="questionsContainer">
+                <!-- سيتم إضافة الأسئلة عبر الجافاسكريبت -->
+            </div>
+            
+            <div class="controls">
+                <button class="btn" id="addQuestionBtn">
+                    <i class="fas fa-plus"></i> إضافة سؤال جديد
+                </button>
+                <button class="btn" id="exploreMoreBtn">
+                    <i class="fas fa-hiking"></i> العودة للرئيسية
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // بيانات الكاروسيل - سلاسل جبلية شهيرة
+        const carouselItems = [
+            { icon: "🏔️", title: "جبال الهيمالايا", desc: "أعلى سلسلة جبلية في العالم" },
+            { icon: "⛰️", title: "جبال الألب", desc: "سلسلة جبال في أوروبا الوسطى" },
+            { icon: "🗻", title: "جبال الأنديز", desc: "أطول سلسلة جبال في العالم" },
+            { icon: "🏞️", title: "جبال روكي", desc: "سلسلة جبال في أمريكا الشمالية" },
+            { icon: "🌄", title: "جبال الأطلس", desc: "سلسلة جبال في شمال أفريقيا" },
+            { icon: "🏕️", title: "جبال القوقاز", desc: "حدود طبيعية بين أوروبا وآسيا" }
+        ];
+
+        // بيانات الأسئلة حول الجبال
+        const questions = [
+            {
+                title: "ما هي أعلى قمة جبلية في العالم؟",
+                difficulty: "easy",
+                description: "تعرف على أعلى قمة جبلية في العالم وموقعها الجغرافي وارتفاعها.",
+                tags: ["ارتفاعات", "قمة", "هيمالايا"],
+                type: "multiple-choice",
+                options: ["إيفرست", "كي 2", "كانغشينجونغا", "لوتسي"],
+                correctAnswer: "إيفرست"
+            },
+            {
+                title: "ما هو أعلى جبل في المغرب؟",
+                difficulty: "medium",
+                description: "اكتشف أعلى قمة جبلية في المغرب وموقعها في جبال الأطلس.",
+                tags: ["المغرب", "أطلس", "ارتفاعات"],
+                type: "multiple-choice",
+                options: ["توبقال", "إيغيل مغون", "راس وانوكريم", "أوكايمدن"],
+                correctAnswer: "توبقال"
+            },
+            {
+                title: "كيف تتشكل السلاسل الجبلية؟",
+                difficulty: "medium",
+                description: "اشرح العمليات الجيولوجية التي تؤدي إلى تشكل السلاسل الجبلية.",
+                tags: ["جيولوجيا", "تكتونية", "تشكل الجبال"],
+                type: "text-input",
+                correctAnswer: "تصادم الصفائح التكتونية"
+            },
+            {
+                title: "ما تأثير الجبال على المناخ؟",
+                difficulty: "medium",
+                description: "ناقش كيف تؤثر الجبال على أنماط الطقس والمناخ في المناطق المحيطة بها.",
+                tags: ["مناخ", "تأثير", "أنماط الطقس"],
+                type: "multiple-choice",
+                options: ["تسبب في هطول أمطار غزيرة", "تمنع هطول الأمطار", "تسبب في ظواهر مناخية متنوعة", "لا تؤثر على المناخ"],
+                correctAnswer: "تسبب في ظواهر مناخية متنوعة"
+            },
+            {
+                title: "ما هي التحديات البيئية التي تواجه الجبال؟",
+                difficulty: "hard",
+                description: "حدد التهديدات البيئية الرئيسية للأنظمة الجبلية والحلول الممكنة.",
+                tags: ["بيئة", "تحديات", "حلول مستدامة"],
+                type: "multiple-choice",
+                options: ["التغير المناخي", "التصحر", "إزالة الغابات", "جميع ما سبق"],
+                correctAnswer: "جميع ما سبق"
+            },
+            {
+                title: "كيف تؤثر الجبال على التنوع البيولوجي؟",
+                difficulty: "medium",
+                description: "استكشف كيف تدعم الجبال تنوعًا بيولوجيًا فريدًا ومميزًا.",
+                tags: ["تنوع بيولوجي", "نظم إيكولوجية", "حياة برية"],
+                type: "text-input",
+                correctAnswer: "توفر بيئات متنوعة ومعزولة"
+            },
+            {
+                title: "ما هي أطول سلسلة جبلية تحت الماء؟",
+                difficulty: "hard",
+                description: "اكتشف السلاسل الجبلية المخفية تحت سطح المحيطات وتأثيرها.",
+                tags: ["جبال تحت الماء", "محيطات", "تضاريس"],
+                type: "multiple-choice",
+                options: ["وسط المحيط الأطلسي", "وسط المحيط الهادئ", "وسط المحيط الهندي", "وسط المحيط المتجمد الشمالي"],
+                correctAnswer: "وسط المحيط الأطلسي"
+            },
+            {
+                title: "ما هو ارتفاع جبل توبقال؟",
+                difficulty: "easy",
+                description: "تعرف على ارتفاع أعلى قمة في المغرب.",
+                tags: ["المغرب", "توبقال", "ارتفاع"],
+                type: "multiple-choice",
+                options: ["4167 متر", "4068 متر", "4089 متر", "3268 متر"],
+                correctAnswer: "4167 متر"
+            },
+            {
+                title: "أين تقع جبال الأطلس؟",
+                difficulty: "easy",
+                description: "حدد الموقع الجغرافي لسلسلة جبال الأطلس.",
+                tags: ["أطلس", "موقع", "جغرافيا"],
+                type: "multiple-choice",
+                options: ["أوروبا", "آسيا", "أفريقيا", "أمريكا الجنوبية"],
+                correctAnswer: "أفريقيا"
+            },
+            {
+                title: "ما هي أهمية الجبال للحياة البشرية؟",
+                difficulty: "medium",
+                description: "ناقش الفوائد التي تقدمها الجبال للبشرية.",
+                tags: ["أهمية", "فوائد", "حياة بشرية"],
+                type: "text-input",
+                correctAnswer: "مصادر ماء وطاقة وتنوع بيولوجي"
+            }
+        ];
+
+        // تهيئة الكاروسيل
+        function initCarousel() {
+            const carousel = document.getElementById('mountainCarousel');
+            const radius = 250;
+            const totalItems = carouselItems.length;
+            const angle = 360 / totalItems;
+
+            carouselItems.forEach((item, index) => {
+                const carouselItem = document.createElement('div');
+                carouselItem.className = 'carousel-item';
+                
+                const yRotation = angle * index;
+                const xTranslation = radius;
+                const zTranslation = 0;
+
+                carouselItem.style.transform = `rotateY(${yRotation}deg) translateZ(${xTranslation}px)`;
+                
+                carouselItem.innerHTML = `
+                    <div class="carousel-icon">${item.icon}</div>
+                    <div class="carousel-title">${item.title}</div>
+                    <div class="carousel-desc">${item.desc}</div>
+                `;
+                
+                carousel.appendChild(carouselItem);
+            });
+
+            // تدوير الكاروسيل تلقائياً
+            let currentRotation = 0;
+            setInterval(() => {
+                currentRotation += 0.2;
+                carousel.style.transform = `rotateY(${currentRotation}deg)`;
+            }, 50);
+        }
+
+        // تهيئة الأسئلة
+        function initQuestions() {
+            const container = document.getElementById('questionsContainer');
+
+            questions.forEach((question, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+
+                let quizContent = '';
+
+                if (question.type === 'multiple-choice') {
+                    quizContent = `
+                        <div class="quiz-options">
+                            ${question.options.map((option, optionIndex) =>
+                                `<div class="quiz-option" data-question="${index}" data-option="${optionIndex}">${option}</div>`
+                            ).join('')}
+                        </div>
+                    `;
+                } else if (question.type === 'text-input') {
+                    quizContent = `
+                        <input type="text" class="text-input" placeholder="اكتب إجابتك هنا..." data-question="${index}">
+                        <button class="submit-btn" data-question="${index}">تحقق من الإجابة</button>
+                    `;
+                }
+
+                questionCard.innerHTML = `
+                    <div class="question-header">
+                        <div class="question-title">${question.title}</div>
+                        <div class="question-difficulty difficulty-${question.difficulty}">
+                            ${question.difficulty === 'easy' ? 'سهل' :
+                              question.difficulty === 'medium' ? 'متوسط' : 'صعب'}
+                        </div>
+                    </div>
+                    <div class="question-description">${question.description}</div>
+                    ${quizContent}
+                    <div class="quiz-feedback" id="feedback-${index}">
+                        <span class="quiz-icon"></span>
+                        <span class="feedback-text"></span>
+                    </div>
+                    <div class="question-tags">
+                        ${question.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                `;
+
+                container.appendChild(questionCard);
+            });
+
+            // إضافة event listeners للأسئلة التفاعلية
+            setupQuizInteractions();
+        }
+
+        // إضافة تفاعلية للأزرار
+        function setupInteractions() {
+            document.getElementById('addQuestionBtn').addEventListener('click', function() {
+                alert('سيتم فتح نموذج لإضافة سؤال جديد حول الجبال!');
+                // يمكنك هنا إضافة منطق لإدخال سؤال جديد
+            });
+
+            document.getElementById('exploreMoreBtn').addEventListener('click', function() {
+                // الانتقال للصفحة الرئيسية
+                window.location.href = 'index.html';
+            });
+
+            // إضافة تفاعل للنقر على بطاقات الكاروسيل
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            carouselItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const title = this.querySelector('.carousel-title').textContent;
+                    alert(`أنت تختار استكشاف: ${title}`);
+                });
+            });
+        }
+
+        // إضافة تفاعلية للأسئلة التفاعلية
+        function setupQuizInteractions() {
+            // إضافة event listeners للخيارات المتعددة
+            const quizOptions = document.querySelectorAll('.quiz-option');
+            quizOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const questionIndex = parseInt(this.getAttribute('data-question'));
+                    const optionIndex = parseInt(this.getAttribute('data-option'));
+                    const question = questions[questionIndex];
+                    const feedbackElement = document.getElementById(`feedback-${questionIndex}`);
+
+                    // إزالة التنسيقات السابقة
+                    const allOptions = document.querySelectorAll(`[data-question="${questionIndex}"]`);
+                    allOptions.forEach(opt => {
+                        opt.classList.remove('correct', 'incorrect');
+                    });
+
+                    // التحقق من الإجابة
+                    if (question.options[optionIndex] === question.correctAnswer) {
+                        this.classList.add('correct');
+                        feedbackElement.innerHTML = '<span class="quiz-icon">✓</span><span class="feedback-text">إجابة صحيحة!</span>';
+                        feedbackElement.className = 'quiz-feedback correct';
+                    } else {
+                        this.classList.add('incorrect');
+                        // إظهار الإجابة الصحيحة
+                        allOptions.forEach((opt, idx) => {
+                            if (question.options[idx] === question.correctAnswer) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                        feedbackElement.innerHTML = `<span class="quiz-icon">✗</span><span class="feedback-text">إجابة خاطئة. الإجابة الصحيحة: ${question.correctAnswer}</span>`;
+                        feedbackElement.className = 'quiz-feedback incorrect';
+                    }
+
+                    feedbackElement.style.display = 'block';
+                });
+            });
+
+            // إضافة event listeners للأزرار الإرسال
+            const submitButtons = document.querySelectorAll('.submit-btn');
+            submitButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionIndex = parseInt(this.getAttribute('data-question'));
+                    const question = questions[questionIndex];
+                    const inputElement = document.querySelector(`input[data-question="${questionIndex}"]`);
+                    const feedbackElement = document.getElementById(`feedback-${questionIndex}`);
+                    const userAnswer = inputElement.value.trim().toLowerCase();
+                    const correctAnswer = question.correctAnswer.toLowerCase();
+
+                    // التحقق من الإجابة
+                    if (userAnswer === correctAnswer) {
+                        feedbackElement.innerHTML = '<span class="quiz-icon">✓</span><span class="feedback-text">إجابة صحيحة!</span>';
+                        feedbackElement.className = 'quiz-feedback correct';
+                        inputElement.style.borderColor = '#90ee90';
+                    } else {
+                        feedbackElement.innerHTML = `<span class="quiz-icon">✗</span><span class="feedback-text">إجابة خاطئة. الإجابة الصحيحة: ${question.correctAnswer}</span>`;
+                        feedbackElement.className = 'quiz-feedback incorrect';
+                        inputElement.style.borderColor = '#ff7f7f';
+                    }
+
+                    feedbackElement.style.display = 'block';
+                });
+            });
+        }
+
+        // تهيئة الصفحة عند التحميل
+        document.addEventListener('DOMContentLoaded', function() {
+            initCarousel();
+            initQuestions();
+            setupInteractions();
+        });
+
+        // بديل إذا لم تعمل الأحداث السابقة
+        window.onload = function() {
+            initCarousel();
+            initQuestions();
+            setupInteractions();
+        };
+    </script>
+</body>
+</html>

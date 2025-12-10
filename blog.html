@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المدونة - TREP DAWOUD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/oled_led_effects.css">
+    <link rel="stylesheet" href="css/card-design.css">
+    <style>
+        :root {
+            --primary: #2E8B57;
+            --secondary: #87CEEB;
+            --tertiary: #8B4513;
+            --white: #FFFFFF;
+            --black: #2F4F4F;
+            --accent: #FFD700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(46, 139, 87, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(135, 206, 235, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+            animation: ambient-glow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes ambient-glow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #ff6b6b;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(220, 53, 69, 0.2);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem 12rem 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            color: #ccc;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Filters */
+        .filters {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            color: var(--white);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 2px rgba(46, 139, 87, 0.5);
+        }
+
+        .filter-select option {
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+        }
+
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .blog-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+            cursor: pointer;
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+            border-radius: 17px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .blog-card:hover::before {
+            opacity: 1;
+            animation: border-glow-smooth 2s ease-in-out infinite;
+        }
+
+        @keyframes border-glow-smooth {
+            0%, 100% { filter: blur(0px); opacity: 1; }
+            50% { filter: blur(3px); opacity: 0.8; }
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #333, #555);
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-category {
+            display: inline-block;
+            background: rgba(46, 139, 87, 0.2);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .blog-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--white);
+            line-height: 1.4;
+        }
+
+        .blog-excerpt {
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-clamp: 3;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .blog-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .blog-date {
+            color: var(--accent);
+        }
+
+        .read-more-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), #228B22);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+        }
+
+        .read-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 139, 87, 0.5);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: none;
+        }
+
+        /* 3D Navigation Bar */
+        .pagination-3d-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            padding: 1rem 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.99) 100%);
+        }
+
+        .pagination-3d {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 20px 20px 0 0;
+            border-top: 2px solid rgba(46, 139, 87, 0.5);
+            box-shadow: 
+                0 -10px 40px rgba(46, 139, 87, 0.2),
+                0 0 60px rgba(46, 139, 87, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            margin: 0 auto;
+            width: 90%;
+        }
+
+        .pagination-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 0%, rgba(46, 139, 87, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 0%, rgba(135, 206, 235, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .page-nav-btn {
+            padding: 0.7rem 1rem;
+            border: 2px solid rgba(46, 139, 87, 0.5);
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(46, 139, 87, 0.1) 0%, rgba(46, 139, 87, 0.05) 100%);
+            color: #2E8B57;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+            box-shadow: 
+                0 5px 20px rgba(46, 139, 87, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 20px rgba(46, 139, 87, 0.1);
+        }
+
+        .page-nav-btn:hover {
+            border-color: #2E8B57;
+            background: linear-gradient(135deg, rgba(46, 139, 87, 0.3) 0%, rgba(46, 139, 87, 0.15) 100%);
+            color: #4CAF50;
+            box-shadow: 
+                0 10px 30px rgba(46, 139, 87, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(46, 139, 87, 0.3);
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .page-nav-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .page-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .page-nav-btn:disabled:hover {
+            transform: none;
+            color: #2E8B57;
+        }
+
+        .page-counter {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, rgba(46, 139, 87, 0.2) 0%, rgba(135, 206, 235, 0.1) 100%);
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            border: 2px solid rgba(46, 139, 87, 0.4);
+            box-shadow: 
+                0 5px 20px rgba(46, 139, 87, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 30px rgba(46, 139, 87, 0.1);
+            position: relative;
+            z-index: 1;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        #currentPageNum {
+            color: #4CAF50;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .separator {
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0 0.2rem;
+        }
+
+        #totalPageNum {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(76, 175, 80, 1);
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--accent);
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-details {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .modal-details h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-details p {
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 6rem 1rem 2rem;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">TREP DAWOUD</div>
+            <ul class="nav-links">
+                <li><a href="pages/login.html">تسجيل الدخول</a></li>
+                <li><a href="pages/signup.html">إنشاء حساب</a></li>
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="pages/blog.html" class="active">المدونة</a></li>
+                <li><a href="pages/courses.html">الدورات</a></li>
+                <li><a href="pages/dashboard.html">لوحة التحكم</a></li>
+                <li><a href="pages/question.html">أسئلة</a></li>
+                <li><a href="pages/chat.html">دردشة</a></li>
+            </ul>
+            <div class="user-menu">
+                <div class="user-avatar" id="userAvatar">أ</div>
+                <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="page-header">
+            <h1 class="page-title">المدونة</h1>
+            <p class="page-subtitle">مقالات ونصائح من خبراء التسلق حول العالم الجبلي</p>
+        </section>
+
+        <section class="filters">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">الفئة</label>
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="">جميع الفئات</option>
+                        <option value="تسلق">تسلق</option>
+                        <option value="معدات">معدات</option>
+                        <option value="سلامة">سلامة</option>
+                        <option value="تدريب">تدريب</option>
+                        <option value="رحلات">رحلات</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">البحث</label>
+                    <input type="text" class="filter-select" id="searchFilter" placeholder="ابحث في المقالات...">
+                </div>
+            </div>
+        </section>
+
+        <section class="blog-grid" id="blogGrid">
+            <!-- Blog posts will be loaded here -->
+        </section>
+
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Navigation Bar 3D -->
+    <div class="pagination-3d-container">
+        <div class="pagination-3d">
+            <button class="page-nav-btn" id="prevPageBtn" data-page="prev">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="page-counter">
+                <span id="currentPageNum">1</span>
+                <span class="separator">/</span>
+                <span id="totalPageNum">3</span>
+            </div>
+            <button class="page-nav-btn" id="nextPageBtn" data-page="next">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal for blog details -->
+    <div class="modal" id="blogModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <img id="modalImage" class="modal-image" src="" alt="">
+            <div class="modal-details" id="modalDetails">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const blogPosts = [
+            {
+                id: 1,
+                title: "دليل المبتدئين لتسلق الجبال العالية",
+                excerpt: "إذا كنت جديداً في عالم التسلق، فهذا الدليل سيساعدك على فهم أساسيات التسلق الآمن والممتع...",
+                category: "تسلق",
+                author: "أحمد محمد",
+                date: "2024-01-15",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>مقدمة</h3>
+                    <p>التسلق الجبلي هو رياضة مثيرة تجمع بين التحدي البدني والجمال الطبيعي. إذا كنت مبتدئاً، فهذا الدليل سيساعدك على فهم الأساسيات.</p>
+
+                    <h3>المعدات الأساسية</h3>
+                    <p>ابدأ بالمعدات الأساسية: أحذية التسلق، حقيبة الظهر، ملابس مناسبة للطقس، وخريطة. لا تحتاج إلى معدات متقدمة في البداية.</p>
+
+                    <h3>السلامة أولاً</h3>
+                    <p>تعلم أساسيات السلامة: تحقق من الطقس، أخبر شخصاً عن خططك، ولا تتسلق بمفردك. انضم إلى مجموعات محلية للتعلم.</p>
+
+                    <h3>نصائح للمبتدئين</h3>
+                    <ul>
+                        <li>ابدأ بجبال منخفضة</li>
+                        <li>تعلم من مرشد معتمد</li>
+                        <li>مارس الرياضة بانتظام</li>
+                        <li>احترم الطبيعة</li>
+                    </ul>
+
+                    <h3>خاتمة</h3>
+                    <p>التسلق رياضة رائعة تفتح أبواباً جديدة لاستكشاف العالم. ابدأ ببطء واستمتع بالرحلة!</p>
+                `
+            },
+            {
+                id: 2,
+                title: "أهم المعدات لرحلات التسلق الشتوية",
+                excerpt: "التسلق في الشتاء يتطلب معدات خاصة لمواجهة البرد والثلوج. تعرف على أهم المعدات التي تحتاجها...",
+                category: "معدات",
+                author: "فاطمة علي",
+                date: "2024-01-10",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>تحديات التسلق الشتوي</h3>
+                    <p>التسلق في الشتاء يوفر مناظر خلابة ولكن يتطلب إعداداً خاصاً. البرد والثلج يجعلان الرحلة أكثر خطراً.</p>
+
+                    <h3>الملابس الدافئة</h3>
+                    <p>استخدم نظام الطبقات: طبقة داخلية للعرق، طبقة وسطى للعزل، وطبقة خارجية مقاومة للرياح والماء.</p>
+
+                    <h3>الأحذية والقفازات</h3>
+                    <p>أحذية مقاومة للماء مع قبضة جيدة، وقفازات داخلية وخارجية للحفاظ على دفء اليدين.</p>
+
+                    <h3>معدات السلامة</h3>
+                    <ul>
+                        <li>أسطوانات أكسجين احتياطية</li>
+                        <li>جهاز GPS للطوارئ</li>
+                        <li>مثقاب ثلج للاختبار</li>
+                        <li>خيمة مقاومة للرياح</li>
+                    </ul>
+
+                    <h3>نصائح إضافية</h3>
+                    <p>تحقق من توقعات الطقس، ابدأ مبكراً، واحمل طعاماً إضافياً. الشتاء جميل ولكنه يتطلب احتراماً.</p>
+                `
+            },
+            {
+                id: 3,
+                title: "نصائح السلامة الأساسية في التسلق",
+                excerpt: "السلامة أولاً دائماً. تعلم أهم النصائح والإجراءات الوقائية لتجنب الحوادث أثناء التسلق...",
+                category: "سلامة",
+                author: "محمد حسن",
+                date: "2024-01-05",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>أهمية السلامة</h3>
+                    <p>التسلق رياضة مثيرة ولكنها تحمل مخاطر. السلامة ليست خياراً، بل واجباً على كل متسلق.</p>
+
+                    <h3>التحضير قبل الرحلة</h3>
+                    <p>تحقق من الطقس، أخبر شخصاً عن خططك، تأكد من صحتك، وتعلم استخدام المعدات.</p>
+
+                    <h3>أثناء التسلق</h3>
+                    <ul>
+                        <li>استخدم دائماً الحزام والحبل</li>
+                        <li>لا تتجاوز حدود قدراتك</li>
+                        <li>تواصل مع رفيقك باستمرار</li>
+                        <li>توقف عند الشعور بالإرهاق</li>
+                    </ul>
+
+                    <h3>الإسعافات الأولية</h3>
+                    <p>تعلم الإسعافات الأساسية: علاج الجروح، التعامل مع الالتواءات، والحفاظ على دفء الجسم.</p>
+
+                    <h3>في حالات الطوارئ</h3>
+                    <p>احمل هاتفاً محمولاً، جهاز إشارة طوارئ، وخطة إخلاء. لا تخف من طلب المساعدة.</p>
+                `
+            },
+            {
+                id: 4,
+                title: "تدريب اللياقة البدنية للمتسلقين",
+                excerpt: "اللياقة البدنية أساس نجاح أي رحلة تسلق. تعرف على أفضل التمارين والتدريبات...",
+                category: "تدريب",
+                author: "سارة أحمد",
+                date: "2023-12-28",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>أهمية اللياقة البدنية</h3>
+                    <p>التسلق يتطلب قوة، مرونة، وتحملاً. اللياقة البدنية تحميك من الإصابات وتزيد من متعتك.</p>
+
+                    <h3>تمارين القوة</h3>
+                    <ul>
+                        <li>تمارين الضغط لتقوية الذراعين</li>
+                        <li>السحب لتقوية الظهر</li>
+                        <li>تمارين الساقين للقفز والصعود</li>
+                        <li>تمارين البطن للتوازن</li>
+                    </ul>
+
+                    <h3>تمارين التحمل</h3>
+                    <p>الجري، السباحة، والدراجة يبنون التحمل القلبي. مارس 3-4 مرات أسبوعياً.</p>
+
+                    <h3>المرونة والتوازن</h3>
+                    <p>اليوغا والتمدد يحسنان المرونة والتوازن. هذه مهارات أساسية في التسلق.</p>
+
+                    <h3>برنامج تدريبي</h3>
+                    <p>ابدأ بتمارين أساسية وزد التدريب تدريجياً. استشر مدرباً لبرنامج مخصص.</p>
+                `
+            },
+            {
+                id: 5,
+                title: "أجمل الرحلات الجبلية في المغرب",
+                excerpt: "اكتشف أجمل الجبال والرحلات في المغرب، من جبال الأطلس إلى الصحراء...",
+                category: "رحلات",
+                author: "يوسف علي",
+                date: "2023-12-20",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>جمال الجبال المغربية</h3>
+                    <p>المغرب يضم جبالاً خلابة تجمع بين الثقافة والطبيعة. من الأطلس إلى الريف، كل منطقة لها سحرها.</p>
+
+                    <h3>جبل توبكال</h3>
+                    <p>أعلى قمة في شمال أفريقيا. رحلة مثيرة عبر قرى بربرية جميلة ومناظر خلابة.</p>
+
+                    <h3>إيغيل مغون</h3>
+                    <p>جبل أسطوري في الأطلس المتوسط. طرق تسلق متنوعة وثقافة محلية غنية.</p>
+
+                    <h3>أوكايمدن</h3>
+                    <p>منتجع تزلج في الأطلس. مثالي للمبتدئين والعائلات.</p>
+
+                    <h3>نصائح للرحلات</h3>
+                    <ul>
+                        <li>احجز مرشد محلي</li>
+                        <li>تعلم التحية بالأمازيغية</li>
+                        <li>جرب الطعام المحلي</li>
+                        <li>احترم التقاليد المحلية</li>
+                    </ul>
+
+                    <h3>أفضل وقت للزيارة</h3>
+                    <p>الربيع والخريف أفضل الأوقات. الشتاء للتزلج، الصيف للمناطق العليا.</p>
+                `
+            },
+            {
+                id: 6,
+                title: "كيفية اختيار الحذاء المناسب للتسلق",
+                excerpt: "اختيار الحذاء المناسب يمكن أن يحدث فرقاً كبيراً في أدائك. تعلم كيف تختار الحذاء المناسب...",
+                category: "معدات",
+                author: "لينا محمد",
+                date: "2023-12-15",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>أهمية الحذاء المناسب</h3>
+                    <p>الحذاء هو أداتك الأساسية في التسلق. حذاء سيء يمكن أن يسبب إصابات ويقلل من متعتك.</p>
+
+                    <h3>أنواع الأحذية</h3>
+                    <ul>
+                        <li>أحذية الاقتراب: مريحة للمشي الطويل</li>
+                        <li>أحذية التسلق الرياضي: مرنة للجدران</li>
+                        <li>أحذية التسلق التقليدي: صلبة للجبال</li>
+                        <li>أحذية الثلج: للمناطق المغطاة بالثلج</li>
+                    </ul>
+
+                    <h3>كيفية القياس</h3>
+                    <p>قيس قدمك في نهاية اليوم عندما تكون متورمة قليلاً. جرب الحذاء مع الجوارب التي ستستخدمها.</p>
+
+                    <h3>نصائح الشراء</h3>
+                    <ul>
+                        <li>لا تشترِ حذاءً ضيقاً جداً</li>
+                        <li>جرب الحذاء في متجر متخصص</li>
+                        <li>استثمر في جودة عالية</li>
+                        <li>اعتنِ بتنظيف وصيانة الحذاء</li>
+                    </ul>
+
+                    <h3>العناية بالحذاء</h3>
+                    <p>نظف الحذاء بعد كل استخدام، جففه جيداً، واستخدم واقياً للمطاط لإطالة عمره.</p>
+                `
+            },
+            {
+                id: 7,
+                title: "التعامل مع الارتفاعات العالية",
+                excerpt: "التعامل مع آثار الارتفاعات العالية يتطلب معرفة وإعداد. تعرف على كيفية التكيف...",
+                category: "سلامة",
+                author: "كريم حسن",
+                date: "2023-12-10",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>مرض الارتفاعات</h3>
+                    <p>يحدث عندما يرتفع الجسم بسرعة إلى ارتفاعات عالية. الأعراض: صداع، غثيان، إرهاق.</p>
+
+                    <h3>الوقاية</h3>
+                    <ul>
+                        <li>اصعد ببطء (300 متر يومياً)</li>
+                        <li>اشرب الكثير من الماء</li>
+                        <li>تناول وجبات خفيفة متكررة</li>
+                        <li>تجنب الكحول والتدخين</li>
+                    </ul>
+
+                    <h3>الأدوية</h3>
+                    <p>استشر طبيباً قبل الرحلة. أدوية مثل دياموكس يمكن أن تساعد في الوقاية.</p>
+
+                    <h3>علامات الخطر</h3>
+                    <p>إذا شعرت بأعراض شديدة، انزل فوراً. الوذمة الرئوية والدماغية حالات طوارئ.</p>
+
+                    <h3>التأقلم</h3>
+                    <p>قضِ يوماً أو يومين في ارتفاع متوسط قبل الصعود الأعلى. هذا يساعد الجسم على التكيف.</p>
+                `
+            },
+            {
+                id: 8,
+                title: "تدريبات القوة للمتسلقين",
+                excerpt: "بناء القوة أمر أساسي للمتسلقين. تعرف على أفضل التدريبات لبناء العضلات...",
+                category: "تدريب",
+                author: "نورا أحمد",
+                date: "2023-12-05",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>أهمية القوة في التسلق</h3>
+                    <p>التسلق يتطلب قوة في الذراعين، الظهر، الساقين، والبطن. تدريبات محددة تبني هذه القوة.</p>
+
+                    <h3>تمارين الذراعين</h3>
+                    <ul>
+                        <li>تمارين الضغط: 3 مجموعات × 12 تكرار</li>
+                        <li>السحب العلوي: 3 مجموعات × 10 تكرار</li>
+                        <li>رفع الأثقال: 3 مجموعات × 8 تكرار</li>
+                    </ul>
+
+                    <h3>تمارين الظهر</h3>
+                    <p>السحب الواسع، تمارين الفراشة، والسباحة تبني عضلات الظهر القوية.</p>
+
+                    <h3>تمارين الساقين</h3>
+                    <ul>
+                        <li>القرفصاء: 4 مجموعات × 15 تكرار</li>
+                        <li>رفع الساق: 3 مجموعات × 12 تكرار</li>
+                        <li>الركض الجبلي: 30-45 دقيقة</li>
+                    </ul>
+
+                    <h3>تمارين البطن</h3>
+                    <p>اللوح الخشبي، تمارين الدراجة، والرفع الساقي لبناء التوازن والقوة الأساسية.</p>
+
+                    <h3>برنامج أسبوعي</h3>
+                    <p>3 أيام تدريب، يوم راحة، مع التركيز على التقنية والتغذية السليمة.</p>
+                `
+            },
+            {
+                id: 9,
+                title: "الطقس وتأثيره على التسلق",
+                excerpt: "فهم الطقس ضروري لأي متسلق. تعرف على كيفية قراءة التنبؤات والتخطيط وفقاً للطقس...",
+                category: "تسلق",
+                author: "علي محمود",
+                date: "2023-11-30",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>أهمية مراقبة الطقس</h3>
+                    <p>الطقس يمكن أن يتغير بسرعة في الجبال. مراقبة الطقس تقليل المخاطر.</p>
+
+                    <h3>الحرارة والبرد</h3>
+                    <p>درجات حرارة عالية تسبب الجفاف والإرهاق. الطقس البارد يتطلب ملابس إضافية.</p>
+
+                    <h3>الرياح والأمطار</h3>
+                    <p>الرياح القوية تؤثر على التوازن. الأمطار تجعل الصخور زلقة وتزيد من الخطورة.</p>
+                `
+            },
+            {
+                id: 10,
+                title: "الغذاء والتغذية في الرحلات",
+                excerpt: "التغذية السليمة أثناء التسلق مهمة جداً. تعرف على أفضل الأطعمة والمشروبات...",
+                category: "رحلات",
+                author: "ليلى محمد",
+                date: "2023-11-25",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>احتياجات الطاقة</h3>
+                    <p>التسلق يحرق السعرات الحرارية بسرعة. احمل وجبات خفيفة غنية بالطاقة.</p>
+
+                    <h3>المشروبات والماء</h3>
+                    <p>اشرب الماء بانتظام حتى لو لم تشعر بالعطش. الترطيب مهم جداً.</p>
+
+                    <h3>وجبات خفيفة موصى بها</h3>
+                    <ul>
+                        <li>المكسرات والفواكه المجففة</li>
+                        <li>الشوكولاتة والمربى</li>
+                        <li>الحبوب والبروتينات</li>
+                        <li>الملح والكهارل</li>
+                    </ul>
+                `
+            },
+            {
+                id: 11,
+                title: "الخريطة والبوصلة: أدوات ضرورية",
+                excerpt: "تعلم كيفية استخدام الخريطة والبوصلة للملاحة الآمنة في الجبال...",
+                category: "معدات",
+                author: "محمد علي",
+                date: "2023-11-20",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>قراءة الخريطة</h3>
+                    <p>تعلم رموز الخريطة والمقاييس والارتفاعات. هذا يساعدك على التنقل بدقة.</p>
+
+                    <h3>استخدام البوصلة</h3>
+                    <p>الاتجاهات الأساسية: شمال، جنوب، شرق، غرب. البوصلة تساعدك على عدم الضياع.</p>
+
+                    <h3>الملاحة بدون معدات</h3>
+                    <p>استخدم الشمس والنجوم والمعالم الطبيعية للملاحة في الحالات الطارئة.</p>
+                `
+            },
+            {
+                id: 12,
+                title: "الرياضات الجماعية والتعاون",
+                excerpt: "التسلق أسهل وأكثر أماناً عندما تكون برفقة آخرين. تعرف على فوائد التسلق الجماعي...",
+                category: "تدريب",
+                author: "ياسمين أحمد",
+                date: "2023-11-15",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>أهمية الفريق</h3>
+                    <p>الفريق يقدم الدعم النفسي والعملي. يزيد من الأمان والمتعة.</p>
+
+                    <h3>أدوار الفريق</h3>
+                    <ul>
+                        <li>القائد: يخطط ويوجه</li>
+                        <li>الطبيب: يوفر الإسعافات الأولية</li>
+                        <li>الموجه: يعرف الطريق</li>
+                        <li>الداعم: يشجع الآخرين</li>
+                    </ul>
+
+                    <h3>التواصل والثقة</h3>
+                    <p>التواصل الجيد والثقة المتبادلة أساس عمل الفريق الناجح.</p>
+                `
+            },
+            {
+                id: 13,
+                title: "البيئة والاستدامة في التسلق",
+                excerpt: "احترام البيئة مسؤولية كل متسلق. تعرف على كيفية تقليل تأثيرك على الطبيعة...",
+                category: "رحلات",
+                author: "سارة خليل",
+                date: "2023-11-10",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>ترك أثر صغير</h3>
+                    <p>خذ معك كل ما تأتي به. لا تترك نفايات في الطبيعة.</p>
+
+                    <h3>حماية الحياة البرية</h3>
+                    <p>احترم الحيوانات والنباتات. لا تلمس أو تقطف شيئاً دون ضرورة.</p>
+
+                    <h3>الطرق المعتمدة</h3>
+                    <p>اتبع الطرق الموجودة. تجنب إنشاء طرق جديدة تؤذي البيئة.</p>
+                `
+            },
+            {
+                id: 14,
+                title: "التصوير الفوتوغرافي في الجبال",
+                excerpt: "التقط صوراً رائعة لرحلاتك الجبلية. تعرف على أفضل تقنيات التصوير في الطبيعة...",
+                category: "رحلات",
+                author: "محمود علي",
+                date: "2023-11-05",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>اختيار الكاميرا</h3>
+                    <p>لا تحتاج إلى كاميرا غالية. هاتفك الذكي قد يكون كافياً.</p>
+
+                    <h3>أفضل أوقات التصوير</h3>
+                    <p>الفجر والغروب يوفران إضاءة طبيعية رائعة وألوان جميلة.</p>
+
+                    <h3>نصائح التصوير</h3>
+                    <ul>
+                        <li>استخدم النقاط الثالثة للتكوين</li>
+                        <li>ضمن الأشخاص في الصورة للحجم</li>
+                        <li>تجنب الوميض المباشر</li>
+                    </ul>
+                `
+            },
+            {
+                id: 15,
+                title: "الخدمات الطبية في الجبال",
+                excerpt: "معرفة أين تجد المساعدة الطبية في الجبال مهمة جداً. تعرف على الخدمات المتاحة...",
+                category: "سلامة",
+                author: "د. فهد محمد",
+                date: "2023-10-30",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>المراكز الطبية</h3>
+                    <p>تحقق من وجود مراكز طبية قريبة قبل الذهاب للرحلة.</p>
+
+                    <h3>الإسعاف الهلي</h3>
+                    <p>بعض المناطق لديها خدمات إنقاذ هلي. تعرف على الاتصال بهم.</p>
+
+                    <h3>التأمين الصحي</h3>
+                    <p>احصل على تأمين يغطي الحوادث في الجبال والمناطق النائية.</p>
+                `
+            },
+            {
+                id: 16,
+                title: "أسطورة توبكال: قصة الجبل الأعظم",
+                excerpt: "اكتشف قصة جبل توبكال وأهميته في ثقافة المغرب والعالم...",
+                category: "رحلات",
+                author: "أمين البيضاوي",
+                date: "2023-10-25",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>الموقع والارتفاع</h3>
+                    <p>جبل توبكال أعلى قمة في شمال أفريقيا، يبلغ ارتفاعه 4167 متر.</p>
+
+                    <h3>الأهمية الثقافية</h3>
+                    <p>يعتبر رمزاً وطنياً مغربياً ونقطة تجمع للمتسلقين من العالم.</p>
+
+                    <h3>الصعود للقمة</h3>
+                    <p>رحلة مثيرة عبر قرى بربرية جميلة تاريخية غنية بالثقافة.</p>
+                `
+            },
+            {
+                id: 17,
+                title: "التدريب المنزلي للمتسلقين",
+                excerpt: "لا تحتاج للجبال لتتدرب. تعرف على تمارين منزلية فعّالة للمتسلقين...",
+                category: "تدريب",
+                author: "عائشة محمد",
+                date: "2023-10-20",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>الفضاء المتاح</h3>
+                    <p>استخدم ما لديك: السلالم، الجدران، الأثاث. كل شيء يمكن أن يكون أداة تدريب.</p>
+
+                    <h3>تمارين بدون معدات</h3>
+                    <ul>
+                        <li>تمارين الضغط والسحب</li>
+                        <li>القرفصاء والركض في المكان</li>
+                        <li>اليوجا والتمدد</li>
+                    </ul>
+
+                    <h3>الاستمرارية</h3>
+                    <p>التدريب المنتظم أهم من الشدة. اجعل التدريب عادة يومية.</p>
+                `
+            },
+            {
+                id: 18,
+                title: "الأقنعة والجهاز التنفسي في الارتفاعات",
+                excerpt: "الأقنعة والأكسجين ضروريان في الارتفاعات الشديدة. تعرف على كيفية استخدامها...",
+                category: "معدات",
+                author: "خالد حسين",
+                date: "2023-10-15",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>متى تحتاج الأكسجين</h3>
+                    <p>الارتفاعات فوق 4000 متر تتطلب أكسجين إضافي في المناطق الصعبة.</p>
+
+                    <h3>أنواع الأقنعة</h3>
+                    <ul>
+                        <li>أقنعة كاملة الوجه</li>
+                        <li>أقنعة الأنف والفم فقط</li>
+                        <li>أقنعة الأنف</li>
+                    </ul>
+
+                    <h3>التدريب على الاستخدام</h3>
+                    <p>تدرب على استخدام القناع قبل الصعود للارتفاعات الكبيرة.</p>
+                `
+            },
+            {
+                id: 19,
+                title: "قصص الخوف والشجاعة في التسلق",
+                excerpt: "الخوف جزء من تجربة التسلق. تعرف على كيفية التعامل معه والتغلب عليه...",
+                category: "تسلق",
+                author: "رائد الحميري",
+                date: "2023-10-10",
+                image: "assets/images/dawoud.jpg",
+                fullContent: `
+                    <h3>الخوف طبيعي</h3>
+                    <p>كل متسلق يشعر بالخوف. الفرق بيننا هو كيفية تعاملنا معه.</p>
+
+                    <h3>فهم الخوف</h3>
+                    <p>تعرف على مصدر خوفك. هل هو من الارتفاع، الألم، أم شيء آخر؟</p>
+
+                    <h3>بناء الثقة</h3>
+                    <ul>
+                        <li>ابدأ برحلات صغيرة</li>
+                        <li>تدرب مع متسلقين محترفين</li>
+                        <li>ركز على نجاحك السابق</li>
+                    </ul>
+                `
+            }
+        ];
+
+        let currentPage = 1;
+        const postsPerPage = 6;
+        let filteredPosts = [];
+
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = getCurrentUser();
+            if (user) {
+                document.getElementById('userAvatar').textContent = user.firstName.charAt(0);
+            } else {
+                document.querySelector('.user-menu').style.display = 'none';
+            }
+
+            // Initialize pagination buttons
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+            
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayPosts();
+                    displayPagination();
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayPosts();
+                    displayPagination();
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            loadPosts();
+            setupFilters();
+        });
+
+        function loadPosts() {
+            filteredPosts = blogPosts.slice();
+            displayPosts();
+            displayPagination();
+        }
+
+        function displayPosts() {
+            const startIndex = (currentPage - 1) * postsPerPage;
+            const endIndex = startIndex + postsPerPage;
+            const postsToShow = filteredPosts.slice(startIndex, endIndex);
+
+            const grid = document.getElementById('blogGrid');
+            grid.innerHTML = '';
+
+            postsToShow.forEach(post => {
+                const card = createPostCard(post);
+                grid.appendChild(card);
+            });
+        }
+
+        function createPostCard(post) {
+            const card = document.createElement('div');
+            card.className = 'blog-card';
+
+            card.innerHTML = `
+                <img src="${post.image}" alt="${post.title}" class="blog-image" onerror="this.src='assets/images/fallback.png'">
+                <div class="blog-content">
+                    <span class="blog-category">${post.category}</span>
+                    <h3 class="blog-title">${post.title}</h3>
+                    <p class="blog-excerpt">${post.excerpt}</p>
+                    <div class="blog-meta">
+                        <div class="blog-author">
+                            <span>✍️</span>
+                            <span>${post.author}</span>
+                        </div>
+                        <span class="blog-date">${formatDate(post.date)}</span>
+                    </div>
+                    <button class="read-more-btn" onclick="openModal(${post.id})">اقرأ المزيد</button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function displayPagination() {
+            const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+            
+            // تحديث معلومات الصفحة في الشريط السفلي
+            document.getElementById('currentPageNum').textContent = currentPage;
+            document.getElementById('totalPageNum').textContent = totalPages;
+            
+            // تحديث حالة الأزرار
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+        }
+
+        // إضافة أحداث أزرار التنقل
+        document.addEventListener('DOMContentLoaded', () => {
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+            
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayPosts();
+                    displayPagination();
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayPosts();
+                    displayPagination();
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            loadPosts();
+            setupFilters();
+        });
+
+        function setupFilters() {
+            const filters = ['categoryFilter', 'searchFilter'];
+
+            filters.forEach(filterId => {
+                document.getElementById(filterId).addEventListener('change', applyFilters);
+                if (filterId === 'searchFilter') {
+                    document.getElementById(filterId).addEventListener('input', applyFilters);
+                }
+            });
+        }
+
+        function applyFilters() {
+            const category = document.getElementById('categoryFilter').value;
+            const search = document.getElementById('searchFilter').value.toLowerCase();
+
+            filteredPosts = blogPosts.filter(post => {
+                if (category && post.category !== category) return false;
+                if (search && !post.title.toLowerCase().includes(search) && !post.excerpt.toLowerCase().includes(search)) return false;
+                return true;
+            });
+
+            currentPage = 1;
+            displayPosts();
+            displayPagination();
+        }
+
+        function openModal(postId) {
+            const post = blogPosts.find(p => p.id === postId);
+            if (!post) return;
+
+            document.getElementById('modalTitle').textContent = post.title;
+            document.getElementById('modalImage').src = post.image;
+            document.getElementById('modalDetails').innerHTML = `
+                <div class="blog-meta" style="margin-bottom: 1rem;">
+                    <div class="blog-author">
+                        <span>✍️</span>
+                        <span>${post.author}</span>
+                    </div>
+                    <span class="blog-date">${formatDate(post.date)}</span>
+                </div>
+                <span class="blog-category" style="margin-bottom: 1rem; display: inline-block;">${post.category}</span>
+                ${post.fullContent}
+            `;
+
+            document.getElementById('blogModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('blogModal').style.display = 'none';
+        }
+
+        function logout() {
+            logout();
+            window.location.href = 'index.html';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('blogModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+    <script src="js/auth.js"></script>
+    <script src="js/routing.js"></script>
+</body>
+</html>
