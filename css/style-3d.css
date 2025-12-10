@@ -373,6 +373,27 @@ body::before {
     color: var(--text-secondary);
 }
 
+/* Dawoud Header Image */
+.dawoud-header-image {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+
+.dawoud-image {
+    max-width: 300px;
+    height: auto;
+    border-radius: 20px;
+    border: 3px solid var(--primary);
+    box-shadow: 0 0 30px rgba(46, 139, 87, 0.5);
+    transition: all var(--transition-base);
+}
+
+.dawoud-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(46, 139, 87, 0.8);
+}
+
 .carousel-wrapper {
     position: relative;
     display: flex;
@@ -1143,3 +1164,4 @@ body::before {
         0 0 80px rgba(46, 139, 87, 0.6),
         inset 0 0 20px rgba(76, 175, 80, 0.6);
 }
+
